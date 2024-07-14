@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Google Search and Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        form { margin-bottom: 20px; }
+        input[type="text"], textarea { width: 300px; padding: 5px; margin-bottom: 10px; }
+        input[type="submit"] { padding: 5px 10px; }
+        h2 { margin-top: 30px; }
+        ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>OpenAI Google Search and Analysis</h1>
+    <form method="POST">
+        <input type="text" name="query" placeholder="Enter your search query" required><br>
+        <textarea name="person_info" placeholder="Enter information about the person" required></textarea><br>
+        <input type="submit" value="Search and Analyze">
+    </form>
+
+    {% if original_query %}
+        <h2>Original Query: {{ original_query }}</h2>
+        {% for query, links in results.items() %}
+            <h3>Results for: {{ query }}</h3>
+            <ul>
+                {% for link in links %}
+                    <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+        <h2>Analysis:</h2>
+        <p>{{ analysis }}</p>
+    {% endif %}
+</body>
+</html>

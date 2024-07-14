@@ -19,9 +19,6 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Set your OpenAI API key
-os.environ["OPENAI_API_KEY"] = ""
-
 # Initialize the AsyncOpenAI client
 client = AsyncOpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 

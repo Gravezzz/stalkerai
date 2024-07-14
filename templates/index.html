@@ -3,37 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenAI Google Search and Analysis</title>
+    <title>StalkAI | Intelligent Search & Analysis</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
-        form { margin-bottom: 20px; }
-        input[type="text"], textarea { width: 300px; padding: 5px; margin-bottom: 10px; }
-        input[type="submit"] { padding: 5px 10px; }
-        h2 { margin-top: 30px; }
-        ul { padding-left: 20px; }
+        :root {
+            --bg-color: #0A0E17;
+            --card-bg: #1A1F2E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #BDBDBD;
+            --accent-color: #00C2FF;
+            --accent-gradient: linear-gradient(135deg, #00C2FF, #0047AB);
+            --input-bg: #2C3344;
+            --input-border: #3D4559;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+            padding: 40px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gradient);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 30px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.2);
+        }
+        input[type="submit"] {
+            background: var(--accent-gradient);
+            color: var(--bg-color);
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            align-self: center;
+        }
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.4);
+        }
+        h2, h3 {
+            color: var(--accent-color);
+            margin-top: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        li:hover {
+            transform: translateX(5px);
+            box-shadow: -5px 0 10px rgba(0, 194, 255, 0.2);
+        }
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #FFFFFF;
+        }
+        .results {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+        .results p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <h1>OpenAI Google Search and Analysis</h1>
-    <form method="POST">
-        <input type="text" name="query" placeholder="Enter your search query" required><br>
-        <textarea name="person_info" placeholder="Enter information about the person" required></textarea><br>
-        <input type="submit" value="Search and Analyze">
-    </form>
+    <div class="container">
+        <h1>StalkAI</h1>
+        <form method="POST">
+            <input type="text" name="full_name" placeholder="Enter the full name" required>
+            <input type="text" name="short_bio" placeholder="Enter a short bio" required>
+            <input type="text" name="social_media" placeholder="Enter a social media link" required>
+            <textarea name="research_goal" placeholder="Enter the goal of your research" required></textarea>
+            <input type="submit" value="Analyze">
+        </form>
 
-    {% if original_query %}
-        <h2>Original Query: {{ original_query }}</h2>
-        {% for query, links in results.items() %}
-            <h3>Results for: {{ query }}</h3>
-            <ul>
-                {% for link in links %}
-                    <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+        {% if original_query %}
+            <div class="results">
+                <h2>Original Query: {{ original_query }}</h2>
+                {% for query, links in results.items() %}
+                    <h3>Results for: {{ query }}</h3>
+                    <ul>
+                        {% for link in links %}
+                            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                        {% endfor %}
+                    </ul>
                 {% endfor %}
-            </ul>
-        {% endfor %}
 
-        <h2>Analysis:</h2>
-        <p>{{ analysis }}</p>
-    {% endif %}
+                <h2>Analysis:</h2>
+                <p>{{ analysis }}</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
